@@ -18,4 +18,8 @@ export class PlaceService {
     const result = this.httpClient.get<Place[]>(`${environment.API_URL}/places`);
     return result;
   }
+
+  getPlaceById(id: number) {
+    return this.httpClient.get<Place>(`${environment.API_URL}/places/${id}`);
+  }
 }

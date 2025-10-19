@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TrailService } from '../../core/trail.service';
+import { Trail } from '../../core/models/trail.model';
 
 @Component({
   selector: 'app-senderos.component',
@@ -17,7 +18,12 @@ export class SenderosComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.trailService.getAllTrails().subscribe({
-      next: (t) => { this.trails = t || []; this.loading = false; },
+      next: (t) => { 
+        console.log('Respuesta del servicio de trails:', t); 
+        console.log('Número de trails recibidos:', t?.length || 0);
+        this.trails = t || []; 
+        this.loading = false; 
+      },
       error: (err) => { this.error = err?.message || 'Error cargando senderos'; this.loading = false; }
     });
   }

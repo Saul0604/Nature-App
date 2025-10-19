@@ -1,7 +1,6 @@
-interface Review {
+export interface Review {
     id: number;
-    placeId: number;
-    userId: number;
+    author: string;
     rating: number;
     comment: string;
     createdAt: Date;

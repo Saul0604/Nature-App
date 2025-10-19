@@ -1,30 +1,27 @@
 <div class="places-list">
-	<div *ngIf="loading" class="loading">Cargando lugares…</div>
-	<div *ngIf="error" class="error">{{ error }}</div>
-	<div *ngIf="!loading && places.length === 0" class="empty">No hay lugares.</div>
+	<h1 class="title">🌿 Lugares Naturales de México</h1>
+	
+	<div *ngIf="loading" class="loading">🌿 Cargando lugares increíbles…</div>
+	<div *ngIf="error" class="error">⚠️ {{ error }}</div>
+	<div *ngIf="!loading && places.length === 0" class="empty">🏞️ No hay lugares disponibles.</div>
 
-	<ul class="list" *ngIf="places.length > 0">
-		<li class="item" *ngFor="let place of places">
-			<h3 class="name">{{ place.name || '— sin nombre —' }}</h3>
-			<p class="desc">{{ place.description || 'Sin descripción' }}</p>
-			<div class="grid">
-				<span><strong>Categoría:</strong> {{ place.category || 'N/D' }}</span>
-					<span><strong>Elevación:</strong> {{ (place.elevationMeters != null) ? place.elevationMeters : 'N/A' }} m</span>
-			<span><strong>Coords:</strong> {{ (place.latitude != null) ? place.latitude : 'N/A' }}, {{ (place.longitude != null) ? place.longitude : 'N/A' }}</span>
-				<span><strong>Accesible:</strong> {{ place.accessible === true ? 'Sí' : (place.accessible === false ? 'No' : 'N/D') }}</span>
-				<span><strong>Entrada:</strong> {{ (place.entryFee != null) ? (place.entryFee | currency:'USD') : 'Gratis/N/D' }}</span>
-				<span><strong>Horario:</strong> {{ place.openingHours || 'N/D' }}</span>
-			</div>
-
-				<div class="photos" *ngIf="place.photos && place.photos.length > 0; else noPhotos">
-					<img *ngFor="let photo of place.photos | slice:0:6"
-							 [src]="photo.url"
-							 [alt]="photo.description || place.name"
-							 loading="lazy" />
+	<div class="grid" *ngIf="places.length > 0">
+		<div class="card" *ngFor="let place of places">
+			<div class="card-image" [style.background-image]="place.photos && place.photos.length > 0 ? 'url(' + place.photos[0].url + ')' : 'url(https://via.placeholder.com/400x250?text=Sin+Imagen)'">
+				<div class="overlay">
+					<span class="category-badge">{{ place.category || 'N/D' }}</span>
 				</div>
-				<ng-template #noPhotos>
-					<div class="no-photos">Sin fotos disponibles</div>
-				</ng-template>
-		</li>
-	</ul>
+			</div>
+			
+			<div class="card-content">
+				<h3 class="card-title">{{ place.name || '— sin nombre —' }}</h3>
+				<p class="card-description">{{ (place.description || 'Sin descripción') | slice:0:100 }}{{ place.description && place.description.length > 100 ? '...' : '' }}</p>
+				
+				<div class="card-footer">
+					<span class="price">{{ place.entryFee === 0 ? '🎫 Gratis' : '💵 ' + (place.entryFee | currency:'USD') }}</span>
+					<a [routerLink]="['/admin/places', place.id]" class="btn-detail">Ver detalles →</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

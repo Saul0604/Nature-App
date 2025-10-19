@@ -1,0 +1,108 @@
+<div class="place-detail">
+  <div *ngIf="loading" class="loading">🌿 Cargando detalles…</div>
+  <div *ngIf="error" class="error">⚠️ {{ error }}</div>
+
+  <div *ngIf="place" class="detail-container">
+    <!-- Header con imagen principal -->
+    <div class="hero" [style.background-image]="place.photos && place.photos.length > 0 ? 'url(' + place.photos[0].url + ')' : 'url(https://via.placeholder.com/1200x400?text=Sin+Imagen)'">
+      <div class="hero-overlay">
+        <a routerLink="/admin/places-list" class="btn-back">← Volver</a>
+        <h1 class="hero-title">{{ place.name }}</h1>
+        <span class="hero-badge">{{ place.category }}</span>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Descripción -->
+      <section class="section">
+        <h2 class="section-title">📝 Descripción</h2>
+        <p class="description">{{ place.description }}</p>
+      </section>
+
+      <!-- Información general -->
+      <section class="section">
+        <h2 class="section-title">ℹ️ Información General</h2>
+        <div class="info-grid">
+          <div class="info-card">
+            <span class="icon">📍</span>
+            <div>
+              <strong>Ubicación</strong>
+              <p>{{ place.latitude.toFixed(4) }}, {{ place.longitude.toFixed(4) }}</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <span class="icon">🏔️</span>
+            <div>
+              <strong>Elevación</strong>
+              <p>{{ place.elevationMeters }} m</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <span class="icon">♿</span>
+            <div>
+              <strong>Accesibilidad</strong>
+              <p>{{ place.accessible ? 'Accesible' : 'No accesible' }}</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <span class="icon">💵</span>
+            <div>
+              <strong>Entrada</strong>
+              <p>{{ place.entryFee === 0 ? 'Gratis' : (place.entryFee | currency:'USD') }}</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <span class="icon">🕐</span>
+            <div>
+              <strong>Horario</strong>
+              <p>{{ place.openingHours }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Galería de fotos -->
+      <section class="section" *ngIf="place.photos && place.photos.length > 0">
+        <h2 class="section-title">📸 Galería de Fotos</h2>
+        <div class="photo-gallery">
+          <img *ngFor="let photo of place.photos" 
+               [src]="photo.url" 
+               [alt]="place.name"
+               loading="lazy">
+        </div>
+      </section>
+
+      <!-- Senderos -->
+      <section class="section" *ngIf="place.trails && place.trails.length > 0">
+        <h2 class="section-title">🥾 Senderos Disponibles</h2>
+        <div class="trails-grid">
+          <div class="trail-card" *ngFor="let trail of place.trails">
+            <h3 class="trail-name">{{ trail.name }}</h3>
+            <div class="trail-info">
+              <span class="trail-badge" [ngClass]="{
+                'difficulty-baja': trail.difficulty.toLowerCase() === 'baja',
+                'difficulty-media': trail.difficulty.toLowerCase() === 'media',
+                'difficulty-alta': trail.difficulty.toLowerCase() === 'alta'
+              }">{{ trail.difficulty }}</span>
+              <span class="trail-badge loop">{{ trail.isLoop ? '🔁 Circuito' : '➡️ Lineal' }}</span>
+            </div>
+            <div class="trail-stats">
+              <div><strong>📏</strong> {{ trail.distanceKm }} km</div>
+              <div><strong>⏱️</strong> {{ trail.estimatedTimeMinutes }} min</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Amenidades -->
+      <section class="section" *ngIf="place.amenities && place.amenities.length > 0">
+        <h2 class="section-title">✨ Amenidades</h2>
+        <div class="amenities">
+          <span class="amenity-badge" *ngFor="let amenity of place.amenities">
+            ✓ {{ amenity.name }}
+          </span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

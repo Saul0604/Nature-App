@@ -1,22 +1,51 @@
 <div class="trails">
-	<div *ngIf="loading" class="loading">Cargando senderos…</div>
-	<div *ngIf="error" class="error">{{ error }}</div>
-	<div *ngIf="!loading && trails.length === 0" class="empty">No hay senderos.</div>
+	<div *ngIf="loading" class="loading">🥾 Cargando senderos…</div>
+	<div *ngIf="error" class="error">⚠️ {{ error }}</div>
+	<div *ngIf="!loading && trails.length === 0" class="empty">🏞️ No hay senderos disponibles.</div>
 
 	<ul class="list" *ngIf="trails.length > 0">
 		<li class="item" *ngFor="let trail of trails">
-			<h3 class="name">{{ trail.Name }}</h3>
-			<p class="desc">{{ ' ' }}</p>
-			<div class="grid">
-				<span><strong>Distancia:</strong> {{ trail.DistanceKm }} km</span>
-				<span><strong>Tiempo estimado:</strong> {{ trail.EstimatedTimeMinutes }} min</span>
-				<span><strong>Dificultad:</strong> {{ trail.Difficulty }}</span>
-				<span><strong>Tipo:</strong> {{ trail.IsLoop ? 'Circuito' : 'Lineal' }}</span>
-				<span><strong>Place Id:</strong> {{ trail.PlaceId }}</span>
+			<div class="header">
+				<h3 class="name">{{ trail.name }}</h3>
+				<span class="difficulty-badge" [ngClass]="{
+					'baja': trail.difficulty.toLowerCase() === 'baja',
+					'media': trail.difficulty.toLowerCase() === 'media',
+					'alta': trail.difficulty.toLowerCase() === 'alta'
+				}">
+					{{ trail.difficulty || 'N/D' }}
+				</span>
 			</div>
-			<div class="path" *ngIf="trail.Path">
-				<strong>Path:</strong>
-				<code>{{ trail.Path }}</code>
+			
+			<div class="content">
+				<div class="grid">
+					<div class="info-item">
+						<strong>📏 Distancia</strong>
+						<span>{{ trail.distanceKm }} km</span>
+					</div>
+					<div class="info-item">
+						<strong>⏱️ Tiempo estimado</strong>
+						<span>{{ trail.estimatedTimeMinutes }} min</span>
+					</div>
+					<div class="info-item">
+						<strong>📍 Lugar ID</strong>
+						<span>#{{ trail.placeId }}</span>
+					</div>
+					<div class="info-item">
+						<strong>🔄 Tipo de ruta</strong>
+						<span>{{ trail.isLoop ? '🔁 Circuito' : '➡️ Lineal' }}</span>
+					</div>
+				</div>
+				
+				<div style="text-align: center; margin: 1rem 0;">
+					<span class="loop-badge" [ngClass]="{ 'no-loop': !trail.isLoop }">
+						{{ trail.isLoop ? '🔁 Ruta Circular' : '➡️ Ruta Lineal' }}
+					</span>
+				</div>
+
+				<div class="path" *ngIf="trail.path">
+					<strong>🗺️ Coordenadas del sendero</strong>
+					<code>{{ trail.path }}</code>
+				</div>
 			</div>
 		</li>
 	</ul>
