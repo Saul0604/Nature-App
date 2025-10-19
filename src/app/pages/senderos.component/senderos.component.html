@@ -1,0 +1,23 @@
+<div class="trails">
+	<div *ngIf="loading" class="loading">Cargando senderos…</div>
+	<div *ngIf="error" class="error">{{ error }}</div>
+	<div *ngIf="!loading && trails.length === 0" class="empty">No hay senderos.</div>
+
+	<ul class="list" *ngIf="trails.length > 0">
+		<li class="item" *ngFor="let trail of trails">
+			<h3 class="name">{{ trail.Name }}</h3>
+			<p class="desc">{{ ' ' }}</p>
+			<div class="grid">
+				<span><strong>Distancia:</strong> {{ trail.DistanceKm }} km</span>
+				<span><strong>Tiempo estimado:</strong> {{ trail.EstimatedTimeMinutes }} min</span>
+				<span><strong>Dificultad:</strong> {{ trail.Difficulty }}</span>
+				<span><strong>Tipo:</strong> {{ trail.IsLoop ? 'Circuito' : 'Lineal' }}</span>
+				<span><strong>Place Id:</strong> {{ trail.PlaceId }}</span>
+			</div>
+			<div class="path" *ngIf="trail.Path">
+				<strong>Path:</strong>
+				<code>{{ trail.Path }}</code>
+			</div>
+		</li>
+	</ul>
+</div>
