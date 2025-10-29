@@ -7,7 +7,7 @@ dist
 src/environments/secret.env.ts
  
 .git
-.gitignore
 .github
-.DS_Store
+.gitignore
  
+.DS_Store
