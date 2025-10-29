@@ -1,4 +1,4 @@
-FROM node:24-alpine as build
+FROM node as build
  
 WORKDIR /app
  
@@ -8,13 +8,11 @@ COPY . .
 RUN npm run create:secret-env
 RUN npm run build
 RUN rm .env
-FROM nginx:alpine
- 
-COPY --from=build /app/dist/store-app-20/browser /usr/share/nginx/html
+FROM nginx
+COPY --from=build /app/dist/NatureApp/browser /usr/share/nginx/html
  
 COPY nginx.conf /etc/nginx/nginx.conf
  
 EXPOSE 80
  
 CMD ["nginx", "-g", "daemon off;"]
- 
