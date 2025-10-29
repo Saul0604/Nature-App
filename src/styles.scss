@@ -1,8 +1,2 @@
-@import 'mapbox-gl/dist/mapbox-gl.css';
-
-
-/* Ensure map container is visible by default */
-.map {
-	width: 100%;
-	height: 100vh; /* full viewport height */
-}
+/* You can add global styles to this file, and also import other style files */
+@import "mapbox-gl/dist/mapbox-gl.css";
