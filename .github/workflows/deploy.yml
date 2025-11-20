@@ -32,7 +32,7 @@ jobs:
           docker push saulguadarrama495/natrue-app:${{ github.sha }}
           docker push saulguadarrama495/natrue-app:latest
   deploy:
-    neerds: build-and-push
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to AWS
