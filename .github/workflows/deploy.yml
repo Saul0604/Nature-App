@@ -44,4 +44,4 @@ jobs:
           script: |
             docker pull saulguadarrama495/natrue-app:latest
             cd containers
-            docker-compose up -d
+            docker compose up -d
