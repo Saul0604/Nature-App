@@ -15,6 +15,12 @@ export class PlaceDetailComponent implements OnInit {
   place: Place | null = null;
   loading = false;
   error: string | null = null;
+  
+  // Variables para análisis IA
+  aiAnalysis: any = null;
+  aiLoading = false;
+  aiError: string | null = null;
+  showAiAnalysis = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,5 +42,47 @@ export class PlaceDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  analyzeWithAI(): void {
+    this.aiLoading = true;
+    this.aiError = null;
+    this.showAiAnalysis = true;
+    
+    this.placeService.getAIAnalysis().subscribe({
+      next: (data) => {
+        this.aiAnalysis = data;
+        this.aiLoading = false;
+      },
+      error: (err) => {
+        this.aiError = err?.error || err?.message || 'Error al analizar con IA';
+        this.aiLoading = false;
+      }
+    });
+  }
+
+  toggleAiAnalysis(): void {
+    if (!this.showAiAnalysis) {
+      if (!this.aiAnalysis) {
+        this.analyzeWithAI();
+      } else {
+        this.showAiAnalysis = true;
+      }
+    } else {
+      this.showAiAnalysis = false;
+    }
+  }
+
+  // Método helper para obtener las claves de un objeto
+  objectKeys(obj: any): string[] {
+    return obj ? Object.keys(obj) : [];
+  }
+
+  // Método helper para formatear claves
+  formatKey(key: string): string {
+    return key
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase())
+      .trim();
   }
 }

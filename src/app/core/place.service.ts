@@ -22,4 +22,8 @@ export class PlaceService {
   getPlaceById(id: number) {
     return this.httpClient.get<Place>(`${environment.API_URL}/places/${id}`);
   }
+
+  getAIAnalysis() {
+    return this.httpClient.get<any>(`${environment.API_URL}/places/ai-analyze`);
+  }
 }

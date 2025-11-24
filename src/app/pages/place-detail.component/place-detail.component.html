@@ -103,6 +103,75 @@
           </span>
         </div>
       </section>
+
+      <!-- Análisis con IA -->
+      <section class="section ai-section">
+        <div class="ai-header">
+          <h2 class="section-title">🤖 Análisis Inteligente</h2>
+          <button class="btn-ai" (click)="toggleAiAnalysis()" [disabled]="aiLoading">
+            {{ showAiAnalysis ? '🔽 Ocultar' : '🔍 Analizar con IA' }}
+          </button>
+        </div>
+
+        <div *ngIf="showAiAnalysis" class="ai-content">
+          <div *ngIf="aiLoading" class="ai-loading">
+            <div class="spinner"></div>
+            <p>🧠 Analizando todos los lugares con IA...</p>
+          </div>
+
+          <div *ngIf="aiError" class="ai-error">
+            <span class="error-icon">⚠️</span>
+            <p>{{ aiError }}</p>
+          </div>
+
+          <div *ngIf="!aiLoading && !aiError && aiAnalysis" class="ai-results">
+            <!-- Si la respuesta tiene estructura JSON -->
+            <div *ngIf="aiAnalysis.generalStats" class="ai-structured">
+              <div class="stats-card" *ngIf="aiAnalysis.generalStats">
+                <h3>📊 Estadísticas Generales</h3>
+                <div class="stats-grid">
+                  <div class="stat-item" *ngFor="let stat of objectKeys(aiAnalysis.generalStats)">
+                    <strong>{{ formatKey(stat) }}:</strong>
+                    <span>{{ aiAnalysis.generalStats[stat] }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="recommendations-card" *ngIf="aiAnalysis.recommendations">
+                <h3>💡 Recomendaciones</h3>
+                <ul>
+                  <li *ngFor="let rec of aiAnalysis.recommendations">{{ rec }}</li>
+                </ul>
+              </div>
+
+              <div class="insights-card" *ngIf="aiAnalysis.insights">
+                <h3>🎯 Insights</h3>
+                <ul>
+                  <li *ngFor="let insight of aiAnalysis.insights">{{ insight }}</li>
+                </ul>
+              </div>
+
+              <div class="top-places-card" *ngIf="aiAnalysis.topPlaces">
+                <h3>🏆 Lugares Destacados</h3>
+                <div class="top-place" *ngFor="let place of aiAnalysis.topPlaces">
+                  <h4>{{ place.name }}</h4>
+                  <p>{{ place.reason }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Si la respuesta es texto plano -->
+            <div *ngIf="aiAnalysis.response" class="ai-text">
+              <pre>{{ aiAnalysis.response }}</pre>
+            </div>
+
+            <!-- Fallback: mostrar JSON completo -->
+            <div *ngIf="!aiAnalysis.generalStats && !aiAnalysis.response" class="ai-json">
+              <pre>{{ aiAnalysis | json }}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>
