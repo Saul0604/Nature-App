@@ -4,11 +4,26 @@
   min-height: 100vh;
 }
 
+.header-with-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.page-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
 .title {
   text-align: center;
   font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 2rem;
+  margin: 0;
   font-weight: 800;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }

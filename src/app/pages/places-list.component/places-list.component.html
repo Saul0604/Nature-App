@@ -1,5 +1,8 @@
 <div class="places-list">
-	<h1 class="title">🌿 Lugares Naturales de México</h1>
+	<div class="header-with-logo">
+		<img src="favicon.ico" alt="NatureApp Logo" class="page-logo">
+		<h1 class="title">Lugares Naturales de México</h1>
+	</div>
 	
 	<div *ngIf="loading" class="loading">🌿 Cargando lugares increíbles…</div>
 	<div *ngIf="error" class="error">⚠️ {{ error }}</div>
