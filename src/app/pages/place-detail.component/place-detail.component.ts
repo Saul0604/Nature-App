@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PlaceService } from '../../core/place.service';
 import { Place } from '../../core/models/place.model';
+import { AIAnalysisResponse } from '../../core/models/ai-object.model';
 
 @Component({
   selector: 'app-place-detail',
@@ -17,7 +18,7 @@ export class PlaceDetailComponent implements OnInit {
   error: string | null = null;
   
   // Variables para análisis IA
-  aiAnalysis: any = null;
+  aiAnalysis: AIAnalysisResponse | null = null;
   aiLoading = false;
   aiError: string | null = null;
   showAiAnalysis = false;
@@ -49,7 +50,8 @@ export class PlaceDetailComponent implements OnInit {
     this.aiError = null;
     this.showAiAnalysis = true;
     
-    this.placeService.getAIAnalysis().subscribe({
+    const placeId = this.place?.id;
+    this.placeService.getAIAnalysis(placeId).subscribe({
       next: (data) => {
         this.aiAnalysis = data;
         this.aiLoading = false;
@@ -71,18 +73,5 @@ export class PlaceDetailComponent implements OnInit {
     } else {
       this.showAiAnalysis = false;
     }
-  }
-
-  // Método helper para obtener las claves de un objeto
-  objectKeys(obj: any): string[] {
-    return obj ? Object.keys(obj) : [];
-  }
-
-  // Método helper para formatear claves
-  formatKey(key: string): string {
-    return key
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .trim();
   }
 }

@@ -23,7 +23,10 @@ export class PlaceService {
     return this.httpClient.get<Place>(`${environment.API_URL}/places/${id}`);
   }
 
-  getAIAnalysis() {
-    return this.httpClient.get<any>(`${environment.API_URL}/places/ai-analyze`);
+  getAIAnalysis(placeId?: number) {
+    const url = placeId 
+      ? `${environment.API_URL}/places/ai-analyze?placeId=${placeId}`
+      : `${environment.API_URL}/places/ai-analyze`;
+    return this.httpClient.get<any>(url);
   }
 }

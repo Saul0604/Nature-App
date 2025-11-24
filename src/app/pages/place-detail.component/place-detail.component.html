@@ -116,7 +116,7 @@
         <div *ngIf="showAiAnalysis" class="ai-content">
           <div *ngIf="aiLoading" class="ai-loading">
             <div class="spinner"></div>
-            <p>🧠 Analizando todos los lugares con IA...</p>
+            <p>🧠 Analizando este lugar con IA...</p>
           </div>
 
           <div *ngIf="aiError" class="ai-error">
@@ -125,49 +125,52 @@
           </div>
 
           <div *ngIf="!aiLoading && !aiError && aiAnalysis" class="ai-results">
-            <!-- Si la respuesta tiene estructura JSON -->
-            <div *ngIf="aiAnalysis.generalStats" class="ai-structured">
-              <div class="stats-card" *ngIf="aiAnalysis.generalStats">
-                <h3>📊 Estadísticas Generales</h3>
-                <div class="stats-grid">
-                  <div class="stat-item" *ngFor="let stat of objectKeys(aiAnalysis.generalStats)">
-                    <strong>{{ formatKey(stat) }}:</strong>
-                    <span>{{ aiAnalysis.generalStats[stat] }}</span>
+            <!-- Dato Curioso -->
+            <div *ngIf="aiAnalysis.DatoCurioso" class="dato-curioso-card">
+              <h3>💡 ¿Sabías que...?</h3>
+              <p class="dato-texto">{{ aiAnalysis.DatoCurioso }}</p>
+            </div>
+
+            <!-- Hoteles Cercanos -->
+            <div *ngIf="aiAnalysis.HotelesCercanos && aiAnalysis.HotelesCercanos.length > 0" class="hoteles-card">
+              <h3>🏨 Hoteles Cercanos</h3>
+              <div class="lugares-grid">
+                <div class="lugar-item" *ngFor="let hotel of aiAnalysis.HotelesCercanos">
+                  <div class="lugar-header">
+                    <span class="lugar-icon">🏨</span>
+                    <h4>{{ hotel.NombreHotel }}</h4>
+                  </div>
+                  <div class="lugar-info">
+                    <p><strong>📍 Dirección:</strong> {{ hotel.DireccionHotel }}</p>
+                    <p><strong>📞 Teléfono:</strong> <a href="tel:{{ hotel.TelefonoHotel }}">{{ hotel.TelefonoHotel }}</a></p>
+                    <p *ngIf="hotel.SitioWebHotel">
+                      <strong>🌐 Sitio Web:</strong> 
+                      <a [href]="hotel.SitioWebHotel" target="_blank" rel="noopener noreferrer">Visitar sitio</a>
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="recommendations-card" *ngIf="aiAnalysis.recommendations">
-                <h3>💡 Recomendaciones</h3>
-                <ul>
-                  <li *ngFor="let rec of aiAnalysis.recommendations">{{ rec }}</li>
-                </ul>
-              </div>
-
-              <div class="insights-card" *ngIf="aiAnalysis.insights">
-                <h3>🎯 Insights</h3>
-                <ul>
-                  <li *ngFor="let insight of aiAnalysis.insights">{{ insight }}</li>
-                </ul>
-              </div>
-
-              <div class="top-places-card" *ngIf="aiAnalysis.topPlaces">
-                <h3>🏆 Lugares Destacados</h3>
-                <div class="top-place" *ngFor="let place of aiAnalysis.topPlaces">
-                  <h4>{{ place.name }}</h4>
-                  <p>{{ place.reason }}</p>
+            <!-- Restaurantes Cercanos -->
+            <div *ngIf="aiAnalysis.RestaurantesCercanos && aiAnalysis.RestaurantesCercanos.length > 0" class="restaurantes-card">
+              <h3>🍽️ Restaurantes Cercanos</h3>
+              <div class="lugares-grid">
+                <div class="lugar-item" *ngFor="let restaurante of aiAnalysis.RestaurantesCercanos">
+                  <div class="lugar-header">
+                    <span class="lugar-icon">🍽️</span>
+                    <h4>{{ restaurante.NombreRestaurante }}</h4>
+                  </div>
+                  <div class="lugar-info">
+                    <p><strong>📍 Dirección:</strong> {{ restaurante.DireccionRestaurante }}</p>
+                    <p><strong>📞 Teléfono:</strong> <a href="tel:{{ restaurante.TelefonoRestaurante }}">{{ restaurante.TelefonoRestaurante }}</a></p>
+                    <p *ngIf="restaurante.SitioWebRestaurante">
+                      <strong>🌐 Sitio Web:</strong> 
+                      <a [href]="restaurante.SitioWebRestaurante" target="_blank" rel="noopener noreferrer">Visitar sitio</a>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Si la respuesta es texto plano -->
-            <div *ngIf="aiAnalysis.response" class="ai-text">
-              <pre>{{ aiAnalysis.response }}</pre>
-            </div>
-
-            <!-- Fallback: mostrar JSON completo -->
-            <div *ngIf="!aiAnalysis.generalStats && !aiAnalysis.response" class="ai-json">
-              <pre>{{ aiAnalysis | json }}</pre>
             </div>
           </div>
         </div>
